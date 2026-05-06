@@ -1,68 +1,40 @@
 # atlas-model-slice-loom
 
-`atlas-model-slice-loom` is a Haskell project for ML utilities. It turns create a Haskell reference implementation for slice workflows, centered on protocol validation, framed sample traffic, and bounds and ordering tests into a small local model with readable fixtures and a direct verification command.
+`atlas-model-slice-loom` is a compact Haskell repository for ml utilities, centered on this goal: Create a Haskell reference implementation for slice workflows, centered on protocol validation, framed sample traffic, and bounds and ordering tests.
 
-## Reading Atlas Model Slice Loom
+## Why I Keep It Small
 
-Start with the README, then open `metadata/project.json` to check the constants behind the examples. After that, `fixtures/cases.csv` shows the compact path and `examples/extended_cases.csv` gives a wider look at the same rule.
+This is intentionally local and self-contained so it can be inspected without credentials, services, or seeded history.
 
-## Purpose
+## Atlas Model Slice Loom Review Notes
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+For a quick review, compare `window width` with `metric stability` before reading the middle cases.
 
-## What It Does
+## Included Behavior
 
-- Models feature signals with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep metric checks changes visible in code review.
-- Includes extended examples for windowed behavior, including `surge` and `degraded`.
-- Documents explainable outputs tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+- `fixtures/domain_review.csv` adds cases for feature drift and window width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/atlas-model-slice-walkthrough.md` walks through the case spread.
+- The Haskell code includes a review path for `window width` and `metric stability`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Design Sketch
+## Internal Model
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying ml utilities behavior without needing a service or database unless the language project itself is SQL. The Haskell code keeps the pure scoring function isolated so tests can check it without setup.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Files Worth Reading
+The added Haskell path is deliberately direct, with fixtures doing most of the explaining.
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Setup
-
-The only required setup is the local Haskell toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Usage
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Validation
 
-## Verification
+The check exercises the source code and the review fixture. `stress` is the high score at 244; `edge` is the low score at 162.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Scope
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Fixture Notes
-
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
-
-## Limits
-
-This code is local-first. It makes no claim about deployed usage and avoids credentials, hosted state, and environment-specific setup.
-
-## Next Directions
-
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add one more ml utilities fixture that focuses on a malformed or borderline input.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.

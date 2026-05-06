@@ -1,0 +1,73 @@
+{
+  "repo": "atlas-model-slice-loom",
+  "language": "Haskell",
+  "category": "ML utilities",
+  "goal": "Create a Haskell reference implementation for slice workflows, centered on protocol validation, framed sample traffic, and bounds and ordering tests.",
+  "review_model": {
+    "terms": [
+      "feature drift",
+      "window width",
+      "metric stability",
+      "explainability"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "feature drift",
+      "signal": 76,
+      "slack": 34,
+      "drag": 20,
+      "confidence": 87,
+      "score": 213,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "window width",
+      "signal": 83,
+      "slack": 36,
+      "drag": 17,
+      "confidence": 93,
+      "score": 244,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "metric stability",
+      "signal": 71,
+      "slack": 47,
+      "drag": 32,
+      "confidence": 69,
+      "score": 162,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "explainability",
+      "signal": 52,
+      "slack": 52,
+      "drag": 10,
+      "confidence": 63,
+      "score": 189,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "feature drift",
+      "signal": 57,
+      "slack": 35,
+      "drag": 8,
+      "confidence": 49,
+      "score": 174,
+      "lane": "ship"
+    }
+  ]
+}
